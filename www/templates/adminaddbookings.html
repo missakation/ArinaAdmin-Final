@@ -1,0 +1,223 @@
+<style>
+    .header .col {
+
+        color: white
+    }
+
+    .row .col {
+        color: white;
+    }
+
+
+
+
+    .popover {
+        background-color: rgb(62, 83, 100);
+    }
+
+    .item-input {
+        padding: 5px;
+        background-color: rgb(62, 83, 100) !important
+    }
+
+    .item-select select {
+        background-color: rgb(62, 83, 100) !important
+    }
+</style>
+
+<ion-view view-title="{{Title}}">
+
+    <ion-nav-buttons side="right">
+        <button class="button button-small" style="border-radius:0px;border-bottom: 1px solid #21ab41;color:white;background:transparent"
+            side="right" ng-click="popover1.show($event)">
+            New Customer
+        </button>
+    </ion-nav-buttons>
+
+    <ion-nav-bar class="headercolor">
+        <ion-nav-back-button>
+        </ion-nav-back-button>
+
+    </ion-nav-bar>
+
+
+    <ion-content style="background-color:rgb(46, 62, 75)">
+
+        <script id="templates/my-popover-addcustomer.html" type="text/ng-template">
+            <ion-popover-view style="height:300px;width:300px;">
+                <div class="bar bar-header" style="border:0px;background-color:rgb(62, 83, 100)">
+                    <h1 class="title" style="color:white">Add New Customer</h1>
+                </div>
+                <ion-content style=" background-color: rgb(62, 83, 100)">
+                    <hr style="padding-top:5px;background-color:rgb(62, 83, 100)" />
+                    <hr style="background-color:rgb(62, 83, 100)" />
+                    <hr style="background-color:rgb(62, 83, 100)" />
+
+                    <div class="list" style="padding:10px">
+                        <label class="item item-input" style="border:1px solid #21ab41;padding:10px;background-color:rgb(62, 83, 100)">
+                            <input placeholder="NAME" style="color:white" type="text"  ng-model="newcustomer.name">
+                        </label>
+                        <label class="item item-input" style="margin-top:10px;padding:10px;border:1px solid #21ab41;background-color:rgb(62, 83, 100)">
+                            <input maxlength="8" placeholder="TELPHONE" style="color:white" type="tel" ng-model="newcustomer.telephone">
+                        </label>
+
+                        <button class="button button-balanced button-full" style="border-radius:5px" ng-click="addcustomer()">
+                            Add Customer
+                        </button>
+
+                    </div>
+
+                </ion-content>
+            </ion-popover-view>
+        </script>
+
+        <script id="templates/my-popover-search.html" type="text/ng-template">
+            <ion-popover-view style="height:400px;width:300px">
+                <ion-content style="background-color:rgb(62, 83, 100)">
+
+                    <div class="list list-inset" style="margin:5px 10px;background-color:transparent;border-bottom:1px solid #21ab41">
+                        <label class="item item-input" style="margin-top:-5px;border-bottom:1px solid #21ab41">
+                            <i class="icon ion-search placeholder-icon"  style="color:#21ab41"></i>
+                            <input type="text" placeholder="Search Customers" ng-model="searchText"  style="color:white">
+                        </label>
+                    </div>
+
+                    <ion-list>
+                        <ion-item ng-repeat="item in mycustomers | filter:searchText" ng-click="closePopover(item)" style="border-bottom:0px;padding:0px;background-color:rgb(62, 83, 100)">
+                            <div class="row" style="border-bottom:1px solid #5f7485;padding:5px">
+                                <div class="col" style="color:white" style="padding:0px">
+                                    {{item.firstname}}
+                                </div>
+                                <div class="col" style="color:white" style="padding:0px"> (+961) {{item.telephone}}
+                                </div>
+                        </ion-item>
+
+
+                    </ion-list>
+                </ion-content>
+            </ion-popover-view>
+        </script>
+
+
+        <div>
+            <div class="col" align="center" style="padding:0px">
+                <input class="button open-button" ng-readonly="true" on-tap="openPickerView()" style="border-radius:0px;color:white;width:100%;line-height:40px;padding-bottom:0px;margin-bottom:0px;background-color:#21ab41"
+                    ng-model="search.text">
+
+            </div>
+
+
+            <div class="row" style="padding-left:10px;padding-right:10px">
+
+                <div class="col col-75" style="padding:0px">
+
+                    <input ng-change="LoadCustomer1()" maxlength="8" ng-model="searchtel.currenttelephone" style="margin-top:10px;text-align:center;padding:25px;background-color:rgba(0, 0, 0, 0.2);padding-left:20px;color:#21ab41;border-radius:5px"
+                        placeholder="Phone number +(961)" type="tel" required>
+
+                </div>
+                <div class="col col-25" style="padding:0px">
+                    <button class="button button-full" style="border-radius:5px;font-size:10px;background-color:#21ab41;color:white;padding-top:5px;padding-bottom:4px"
+                        ng-click="popover.show($event)">
+                        <i class="icon ion-search placeholder-icon" style="color:#fff"></i>
+                    </button>
+                </div>
+            </div>
+
+
+            <h5 style="color:red" ng-show="notselected">
+                Please Select a Customer
+            </h5>
+        </div>
+
+
+        <h4 align="center" style="color:white">
+            {{selectedcustomer.firstname}} Stats
+        </h4>
+
+        <div align="center" class="row">
+            <div class="col">Bookings</div>
+            <!-- <div class="col ">Cancelled</div> -->
+            <div class="col">X Show Up</div>
+        </div>
+
+        <div align="center" class="row">
+            <!--ng-repeat="data in ctrl.data"-->
+            <div class="col">{{selectedcustomer.showedUp}}</div>
+            <!--<div class="col">{{selectedcustomer.cancelled}}</div>-->
+            <div class="col">{{selectedcustomer.didnotshowup}}</div>
+        </div>
+
+        <h5 style="color:white;margin-top:0px;border-top:1px solid #5f7485">
+
+        </h5>
+        <label class="item item-input item-select" style="margin:0 10px;color:white;border:none" ng-click="">
+            <i style="padding-left:10px;font-size:30px" class="ion-ios-location-outline"></i>
+            <div class="input-label" style="padding-left:10px;width:50%;color:white;border:none;">
+                Select Stadium
+            </div>
+            <select ng-model="stadiumdata.subkey" style="color:white;border:none" ng-change="changeprice()">
+
+                <option value="{{item.key}}" ng-repeat="item in myministadiums">
+                    {{item.name}}
+                </option>
+
+            </select>
+        </label>
+        </br>
+        <label class="item item-input" style="margin:0 10px;color:white;border:none">
+            <i style="padding-left:10px;font-size:30px" class="icon ion-pricetag"></i>
+            <span class="input-label" style="padding-left:10px;width:30%;color:white">Price L.L. </span>
+            <input type="number" ng-model="extrainfo.bookingprice" style="text-align:right;color:white">
+        </label>
+        <div ng-hide="IsEditMode && CurrentBooking.isrecurring">
+            </br>
+            <label class="item item-input item-select" style="margin:0 10px;color:white;border:none">
+                <i style="padding-left:10px;font-size:30px" class="ion-android-refresh"></i>
+                <div class="input-label" style="padding-left:10px;color:white;border:none">
+                    Recurring
+                </div>
+                <select style="color:white;border:none" ng-model="extrainfo.recurring">
+                    <option>Once</option>
+                    <option>4 weeks</option>
+                    <option>6 weeks</option>
+                    <option>8 weeks</option>
+                    <option>10 weeks</option>
+                    <option>16 weeks</option>
+                    <option>24 weeks</option>
+                </select>
+            </label>
+        </div>
+        <br>
+        <label class="item item-input item-select" style="margin:0 10px;color:white;border:none">
+            <i style="padding-left:10px;font-size:30px" class="ion-android-time"></i>
+            <div class="input-label" style="padding-left:10px;color:white;border:none">
+                Duration(mins)
+            </div>
+            <select style="color:white;border:none; " ng-model="extrainfo.duration">
+                <option>30</option>
+                <option>60</option>
+                <option selected>90</option>
+                <option>120</option>
+                <option>150</option>
+                <option>180</option>
+            </select>
+        </label>
+        </br>
+        <br>
+        <br>
+
+    </ion-content>
+    <br />
+    <div class="bar bar-footer" style="background-color:#21ab41;background-position:bottom">
+        <button class="button button-small button-balanced" style="border-radius:5px;font-size:15px;width:100%" ng-click="addbooking()">
+            SAVE
+        </button>
+    </div>
+    <ion-footer-bar align-title="left" class="bar-dark" style="background-color: rgb(30,30,30);border: none" ng-show="nointernet">
+        <div align="left" style="padding-left: 5px">
+            <h6 class="whitetext">
+                Oops. You have no internet connection
+            </h6>
+        </div>
+    </ion-footer-bar>
+</ion-view>

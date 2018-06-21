@@ -1,0 +1,81 @@
+<ion-view view-title="Register">
+    <style>
+        body {
+            background-color: lightgrey;
+        }
+
+        h4.titles {
+            color: white;
+            background-color: mediumseagreen;
+            text-align: center;
+            height: 25px;
+            border-radius: 20px;
+        }
+    </style>
+
+    <ion-content style="background-image:url(img/loginbackground.jpg); background-size:120% 100%;" ng-controller="LoginController">
+
+
+        <!--
+          Below we include the Login Button social plugin. This button uses
+          the JavaScript SDK to present a graphical Login button that triggers
+          the FB.login() function when clicked.
+        -->
+        <div>
+            <br />
+            <br />
+            <br />
+            <br />
+
+        </div>
+
+        <div style="padding-left:20px">
+            <img src="img/Logo.png" style="height:30%; width:40%">
+        </div>
+
+
+        <!--<button class="button button-block button-dark" ng-click="doLogin()">Facebook Sign In</button>
+        <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+        </fb:login-button>
+
+        <div id="status">-->
+        <!--</div>-->
+        <br />
+
+
+        <div class="list" style="width:65%; padding-left:20px">
+
+            <div style="color:black;background-color:darkorange">
+                <b style="font-size:larger">Username:</b>
+            </div>
+            <label class="item item-input" style="background-color:black;border-color:darkorange;color:white">
+                <input type="text" ng-model="displayname" style="color:white">
+
+            </label>
+
+
+            <div style="color:black;background-color:darkorange">
+                <b style="font-size:larger">Email:</b>
+            </div>
+            <label class="item item-input" style="background-color:black;border-color:darkorange;color:white">
+                <input type="text" ng-model="email" style="color:white">
+
+            </label>
+
+            <div style="color:black;background-color:darkorange">
+                <b style="font-size:larger">Password</b>:
+            </div>
+            <label class="item item-input" style="background-color:black;border-color:darkorange">
+
+                <input type="password" ng-model="password" style="color:white">
+
+            </label>
+        </div>
+            <button nav-clear class="button button-block button-energized" style="background-color:darkorange ;border-color:black" ng-click="Register(user)">
+                Register
+            </button>
+
+
+
+    </ion-content>
+</ion-view>

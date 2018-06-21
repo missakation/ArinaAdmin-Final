@@ -1,0 +1,239 @@
+<style>
+    .header .col {
+        background-color: #21ab41;
+        color: white;
+    }
+
+    .row .col {
+        color: white;
+    }
+
+    .item-input {
+        padding: 0px;
+    }
+
+    .item-input input {
+        padding-left: 70px;
+    }
+
+    .popover .scroll-content {
+        padding: 0px 10px;
+    }
+
+    .card {
+        margin: 5px;
+    }
+</style>
+
+<ion-view view-title="Bookings">
+
+    <ion-nav-title side="center">
+        SCHEDULES
+    </ion-nav-title>
+
+    <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>
+    </ion-nav-buttons>
+
+    <ion-nav-buttons side="right">
+        <button class="button button-icon button-light" style="font-size:14px;border-radius:0px;border-bottom:1px solid #21ab41;color:white"
+            ng-click="setToday()">
+            Today
+        </button>
+    </ion-nav-buttons>
+    <ion-nav-bar class="headercolor">
+        <ion-nav-back-button>
+
+        </ion-nav-back-button>
+    </ion-nav-bar>
+
+    <div class="bar bar-subheader" style="border:none;background:rgb(45,62,75)">
+
+        <button style="width:12%;font-size:20px;background-color:transparent" class="button ion-arrow-left-a" ng-click="goback()"></button>
+
+
+        <h5 class="title" style="border:none;color:white;font-size:small">
+            <label class="item item-input" align-title="center" style="height:40px;border:none;background-color:rgb(45,62,75)">
+                <input type="date" ng-model="search.date" ng-change="ReloadPage()" style="padding-right:50px;margin-top:5px;text-align:center;border:none;background-color:rgb(45,62,75);color:white">
+            </label>
+        </h5>
+
+
+        <button style="width:12%;font-size:20px;background-color:transparent" class="button ion-arrow-right-a" ng-click="gofront()"></button>
+
+
+    </div>
+
+    <script id="templates/my-popover-editbooking.html" type="text/ng-template">
+        <ion-popover-view style="background-color:rgb(45,62,75);margin:0px;padding:0 10px;height:240px;width:220px;">
+
+            <ion-content>
+                <button class="button button-positive button-full" style="border-radius:5px" ng-click="EditBooking()">
+                    Edit
+                </button>
+                <button class="button button-assertive button-full" style="border-radius:5px" ng-click="DeleteBooking(0)">
+                        Cancel
+                </button>
+
+                <button class="button button-assertive button-full" style="border-radius:5px" ng-show="SelectedBooking.isrecurring" ng-click="DeleteBooking(3)">
+                        Cancel All
+                </button>
+
+                <!--<button class="button button-assertive button-full" style="border-radius:5px" ng-click="DeleteBooking(1)">
+                        Cancel Due Weather
+                </button>-->
+
+                <button class="button button-assertive button-full" style="border-radius:5px" ng-click="DeleteBooking(2)">
+                        Did Not Show Up
+                </button>
+
+                </div>
+
+            </ion-content>
+        </ion-popover-view>
+    </script>
+
+
+    <ion-content class="has-subheader" style="border:none;background-color:rgb(62, 83, 100)" align="center" on-swipe-left="gofront()"
+        on-swipe-right="goback()">
+        <div ng-show="scheduleswithday.length==0">
+            <h4 style="color:#21ab41; padding-top:50px">
+                No Schedule Yet
+            </h4>
+        </div>
+
+        <div ng-repeat="playerPerTeam in playersToFilter() | filter:filterTeams">
+
+
+            <div style="color:white;text-transform:uppercase" align="center">
+                <h4 style="background-color:#21ab41;font-size:18px;color:white;margin:10px 5px;line-height:27px">{{playerPerTeam.mininame}}</h4>
+            </div>
+
+            <div ng-repeat="items in scheduleswithday | filter:{minikey:playerPerTeam.minikey} | orderBy:'fullstartdate' ">
+
+                <div class="card" style="font-weight:bold; font-family:sans-serif;font-size:20px">
+                    <!--<div class="row" style="background-color:{{items.color}}">-->
+                    <div class="row" align="center" ng-click="openEditPopover($event,items)" style="padding-right:0px;font-size:16px;font-weight:400;background-color:rgb(62, 83, 100)">
+
+
+                        <!--ng-repeat="data in ctrl.data"-->
+                        <div class="col col-25" style="color:white">
+                            {{items.fullstartdate | date : 'H:mm'}}
+                        </div>
+
+
+                        <div align="left" class="col col-75" ng-hide="items.type == 'T'" style="border-left:1px solid #5f7485;padding-left:5px;padding-right:0px;text-transform:capitalize;color:white">
+                            <i class="icon ion-android-contact"></i> {{items.name}}
+                        </div>
+
+
+
+                        <!--  <div ng-hide="items.type == 'T'" style="text-transform:uppercase;width:50%;padding:0px;background-color:rgb(62, 83, 100);padding:0px;color:white">
+
+                        </div>-->
+
+
+
+                    </div>
+
+                    <div class="row" align="center" ng-click="openEditPopover($event,items)" style="padding-right:0px;font-size:16px;line-height:30px;font-weight:400;background-color:rgb(62, 83, 100);margin:-20px 0">
+
+
+                        <!--ng-repeat="data in ctrl.data"-->
+                        <div class="col col-25" style="color:white">
+                            -
+                        </div>
+
+                        <!--    <div class="col"  style="width:50%;padding:3px;background-color:rgb(62, 83, 100);color:white;height:20px" ng-show="items.type == 'T'"
+                            ng-click="gogamedetails(items)">
+
+                        </div>-->
+
+                        <!--    <div class="col" ng-hide="items.type == 'T'" style="text-transform:uppercase;width:50%;padding:0px;margin-top:-5px;background-color:rgb(62, 83, 100);padding:0px;color:white">
+                           
+                        </div>-->
+
+
+                        <div class="col" style="border-left:1px solid #5f7485;width:75%;color:white">
+
+                        </div>
+
+
+                    </div>
+
+                    <div align="center" class="row" ng-click="openEditPopover($event,items)" style="padding-right:0px;font-size:16px;line-height:20px;font-weight:400;background-color:rgb(62, 83, 100)">
+
+
+                        <!--ng-repeat="data in ctrl.data"-->
+
+                        <div class="col col-25" style="color:white;">
+                            {{items.fullenddate | date : 'H:mm'}}
+                        </div>
+
+                        <!-- <div style="width:50%;padding:0px;background-color:rgb(62, 83, 100);color:white; height:20px" ng-hide="items.type == 'T'">
+
+
+                        </div>-->
+                        <div align="left" style="margin-top: 5px;font-size:14px;border-left:1px solid #5f7485;padding-left:5px;width:37%;color:white">
+                            <i class="icon ion-ios-telephone-outline"></i> {{items.telephone}}
+                        </div>
+
+
+                        <div style="margin-top: 5px;padding-right:0px;font-size:14px;width:38%;color:white">
+                            <i class="icon ion-pricetag"></i> {{items.price}} L.L.
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div ng-show="!Loading && scheduleswithday.length!=0" style="margin:0 10px;background-color: rgb(45,62,75)">
+            <div style="color:white;text-transform:uppercase; height:20px;" align="center">
+                <h4 style="color:white;padding:8px">SUMMARY</h4>
+            </div>
+            <div>
+                <div class="row" style="padding-top:15px;color: white">
+                    <div class="col">
+                        <h6 align="center" style="margin:0px;padding:0px;color: white">
+                            TOTAL BOOKINGS
+                        </h6>
+                    </div>
+                    <div class="col">
+                        <h6 align="center" style="margin:0px;padding:0px;color: white">
+                            TOTAL PRICE
+                        </h6>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <h6 align="center" style="margin:0px;padding:0px;color: white">
+                            {{scheduleswithday.length}}
+                        </h6>
+                    </div>
+                    <div class="col">
+                        <h6 align="center" style="margin:0px;padding:0px;color: white">
+                            {{scheduleswithday.total}} L.L.
+                        </h6>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <br />
+
+    </ion-content>
+
+    <div class="bar bar-footer" style="background-color:#21ab41">
+        <a ng-href="#/app/adminaddbookings" class="button button-calm button-large ion-plus-round" style="background-color:#21ab41;width:100%">Add a Booking</a>
+    </div>
+    <ion-footer-bar align-title="left" class="bar-dark" style="background-color: rgb(30,30,30);border: none" ng-show="nointernet">
+        <div align="left" style="padding-left: 5px">
+            <h6 class="whitetext">
+                Oops. You have no internet connection
+            </h6>
+        </div>
+    </ion-footer-bar>
+</ion-view>

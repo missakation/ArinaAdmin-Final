@@ -1,0 +1,54 @@
+<style>
+    .bar.bar-royal {
+        border-color: #6b46e5;
+        background-color: #886aea;
+        background-image: none;
+        color: #fff;
+    }
+
+    .placeholder-icon:first-child {
+        margin-bottom: 10px;
+    }
+</style>
+
+<ion-view view-title="My Customers">
+
+    <ion-nav-buttons side="secondary">
+        <button class="button button-icon icon ion-ios-search-strong" ng-click="showFilterBar()"></button>
+    </ion-nav-buttons>
+
+    <ion-nav-bar class="headercolor">
+        <ion-nav-back-button>
+        </ion-nav-back-button>
+    </ion-nav-bar>
+
+    <ion-content style="background-color: rgb(45, 62, 75)" ng-controller="AdminController">
+
+        <ion-item ng-repeat="items in filteredCustomers |orderBy:'firstname'" ng-click="OpenCustomerDetails(items)" style="border-radius:10px;background-color: rgba(62, 83, 100, 0.5) !important;padding:10px;margin:7px">
+            <div class="row" style="padding:0px">
+                <div class="col" style="text-transform:capitalize;padding:0px;color:white">
+                    {{items.firstname}}
+                </div>
+                <div class="col" style="padding:0px;color:white">
+                    +961 - {{items.telephone}}
+                </div>
+
+            </div>
+
+        </ion-item>
+
+
+
+    </ion-content>
+    <div class="bar bar-footer" style="background-color:#21ab41">
+        <a ng-href="#/app/createcustomer" class="button button-balanced button-large" style="width:100%;line-height:40px">
+            <i class="icon ion-ios-personadd-outline" style="padding-right:7px"></i> Add New Customer </a>
+    </div>
+    <ion-footer-bar align-title="left" class="bar-dark" style="background-color: rgb(30,30,30);border: none" ng-show="nointernet">
+        <div align="left" style="padding-left: 5px">
+            <h6 class="whitetext">
+                Oops. You have no internet connection
+            </h6>
+        </div>
+    </ion-footer-bar>
+</ion-view>

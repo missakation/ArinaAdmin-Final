@@ -1,0 +1,37 @@
+
+<ion-view view-title="{{Customer.firstname}}">
+
+    <ion-nav-bar class="headercolor">
+        <ion-nav-back-button>
+
+        </ion-nav-back-button>
+    </ion-nav-bar>
+
+    <ion-content style="background-color: rgb(45, 62, 75)">
+
+            <div class="list">
+                <label align="center" class="item item-input" style="border-radius:5px;margin:5px;border:1px solid #21ab41;padding:10px;background-color:rgb(62, 83, 100);color:white">
+                    <input placeholder="NAME"  style="color:white" type="text" maxlength="20" ng-model="Customer.firstname">
+                </label>
+            <label align="center" class="item item-input" style="border-radius:5px;margin:5px;padding:10px;border:1px solid #21ab41;border-bottom:1px solid #21ab41;color:white;background-color:rgb(62, 83, 100)">
+                    <input placeholder="TELPHONE" style="color:white" type="tel" maxlength="10" ng-model="Customer.telephone">
+                </label>
+            
+                </div>
+
+
+    </ion-content>
+    <ion-footer-bar class="bar bar-dark" style="height:43px;padding:0px;border-radius:0px">
+        <div class="button-bar">
+            <a class="button button-assertive" ng-click="DeleteCustomer()"  style="line-height:43px;border-radius:0px;font-size:16px">Delete</a>
+            <a class="button button-balanced" ng-click="SaveCustomer()"  style="line-height:43px;border-radius:0px;font-size:16px">Save</a>
+        </div>
+    </ion-footer-bar>
+    <ion-footer-bar align-title="left" class="bar-assertive" style="background-color: rgb(30,30,30);border: none" ng-show="nointernet">
+        <div align="left" style="padding-left: 5px">
+            <h6 class="whitetext">
+                Oops. You have no internet connection
+            </h6>
+        </div>
+    </ion-footer-bar>
+</ion-view>

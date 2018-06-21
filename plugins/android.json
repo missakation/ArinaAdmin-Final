@@ -1,0 +1,41 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-datepicker": {
+            "PACKAGE_NAME": "com.ionicframework.ArinaAdmin"
+        },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.ionicframework.ArinaAdmin"
+        },
+        "cordova-plugin-facebook4": {
+            "APP_ID": "884613608316881",
+            "APP_NAME": "FootballChallenge",
+            "PACKAGE_NAME": "com.ionicframework.ArinaAdmin"
+        },
+        "cordova-plugin-inappbrowser": {
+            "PACKAGE_NAME": "com.ionicframework.ArinaAdmin"
+        },
+        "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "com.ionicframework.ArinaAdmin"
+        },
+        "cordova-plugin-statusbar": {
+            "PACKAGE_NAME": "com.ionicframework.ArinaAdmin"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.ionicframework.ArinaAdmin"
+        },
+        "ionic-plugin-keyboard": {
+            "PACKAGE_NAME": "com.ionicframework.ArinaAdmin"
+        },
+        "onesignal-cordova-plugin": {
+            "PACKAGE_NAME": "com.arina.arinabusiness"
+        }
+    },
+    "dependent_plugins": {}
+}

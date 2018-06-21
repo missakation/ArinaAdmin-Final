@@ -1,0 +1,39 @@
+
+
+<ion-view view-title="Player Finder" >
+
+    <ion-content ng-controller="SearchController" style="background-color: rgb(62, 83, 100)">
+
+        <div class="row">
+
+            <div class="col-50" align="center">
+                <!--<p style="background-color:lightgray">Date</p>-->
+                <label class="item item-input">
+                    <input type="date" ng-model="search.date">
+                </label>
+            </div>
+
+            <div class="col-50" align="center">
+                <!--<p style="background-color:lightgray">Time</p>-->
+                <label class="item item-input">
+                    <input type="time" ng-model="search.time">
+                </label>
+
+            </div>
+        </div>
+
+        <button class="button button-block button-energized" style="background-color:darkorange" height="20px" type="submit" ng-click="checkfree(search)"> Search</button>
+
+        <div class="list">
+
+            <a class="item item-avatar" ng-repeat="item in allfreeplayers">
+                <img src={{item.photo}}>
+                <h2>{{item.displayname}}</h2>
+                <p>{{item.rating}} AR</p>
+            </a>
+
+        </div>
+
+       
+    </ion-content>
+</ion-view>

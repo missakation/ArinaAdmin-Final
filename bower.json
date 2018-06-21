@@ -1,0 +1,18 @@
+{
+  "name": "ionic-sidemenu",
+  "private": true,
+  "devDependencies": {
+    "ionic": "driftyco/ionic-bower#1.2.4"
+  },
+  "dependencies": {
+    "install": "^1.0.4",
+    "ng-cordova-oauth": "^0.2.10",
+    "ionic-rating": "^0.3.0",
+    "auth0-angular": "^4.2.3",
+    "auth0-lock": "^10.0.2",
+    "a0-angular-storage": "^0.0.15",
+    "angular-jwt": "^0.0.9",
+    "facebook-connect-plugin": "https://raw.githubusercontent.com/Wizcorp/phonegap-facebook-plugin/master/www/js/facebookConnectPlugin.js"
+
+  }
+}
