@@ -559,7 +559,7 @@ angular.module('football.services', [])
             GetCustomers: function (callback) {
                 Customers = [];
                 try {
-                    firebase.database().ref('/players').on('value', function (snapshot) {
+                    firebase.database().ref('/players').once('value').then(function (snapshot) {
                         Customers = [];
                         snapshot.forEach(function (PlayerSnapshot) {
                             var numbookings = 0;
