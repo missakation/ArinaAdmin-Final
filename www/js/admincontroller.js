@@ -235,18 +235,38 @@ angular.module('football.controllers')
         
          return firebase.database().ref().update(updates);*/
 
-        var user = firebase.auth().currentUser;
-        var query = firebase.database().ref('/admins/' + user.uid).once('value', function (adminsnapshot) {
-            window.plugins.OneSignal.getIds(function (ids) {
-                var updates = {};
-                updates['/admins/' + user.uid + '/devicetoken/' + ids.userId] = true;
-                updates['/stadiums/' + adminsnapshot.child("key").val() + '/devicetoken/' + ids.userId] = true;
-                updates['/stadiumsinfo/' + adminsnapshot.child("key").val() + '/devicetoken/' + ids.userId] = true;
-                firebase.database().ref().update(updates).then(function () {
-                });
-            });
-        })
+        $scope.$on("$ionicView.afterEnter", function (event, data) {
 
+
+            $timeout(function () {
+
+                try {
+
+                    var user = firebase.auth().currentUser;
+                    var query = firebase.database().ref('/admins/' + user.uid).once('value', function (adminsnapshot) {
+                        window.plugins.OneSignal.getIds(function (ids) {
+
+                            var updates = {};
+
+                            updates['/admins/' + user.uid + '/devicetoken/' + ids.userId] = true;
+                            updates['/stadiums/' + adminsnapshot.child("key").val() + '/devicetoken/' + ids.userId] = true;
+                            updates['/stadiumsinfo/' + adminsnapshot.child("key").val() + '/devicetoken/' + ids.userId] = true;
+
+
+                            firebase.database().ref().update(updates).then(function () {
+                            }).catch(function (error) {
+                                this.errorMessage = 'Error - ' + error.message
+                            });
+                        });
+                    })
+
+                }
+                catch (err) {
+                    alert(err.message);
+                }
+            }, 4000)
+
+        })
 
 
         var connectedRef = firebase.database().ref(".info/connected");
@@ -1008,6 +1028,16 @@ angular.module('football.controllers')
             text: "Tomorrow, 9:00PM" //- " + ($scope.myprofile.favstadium != null && $scope.myprofile.favstadium != "" ?$scope.myprofile.favstadium:"Near me")
         };
 
+        var options = {  
+            weekday: "long", year: "numeric", month: "short",  
+            day: "numeric", hour: "2-digit", minute: "2-digit"  
+        };  
+
+        if ($scope.IsEditMode) {
+            $scope.search.date = $scope.CurrentBooking.fullstartdate;
+            $scope.search.text = $scope.CurrentBooking.fullstartdate.toLocaleTimeString("en-us", options);  
+        }
+
         function getDateFromDayName(selectedDay) {
             var selectedDate = new Date();
             if (selectedDay == "Tomorrow") {
@@ -1077,21 +1107,15 @@ angular.module('football.controllers')
                         var constructedDate = selectedDate + ", " + hima.getFullYear() + selectedTime;
 
                         if (new Date(constructedDate).getTime() < hima.getTime()) {
-                            console.log("Hasank ayndegh our avaze vosgi e");
 
                             var hours = Math.abs(new Date(constructedDate) - hima) / 36e5;
-                            console.log("arperoutyoun:" + hours);
-                            if (hours < 24) {
-                                console.log("Aysor e ter..");
-                            }
-                            else
+
+                            if (hours >= 24)
                                 constructedDate = selectedDate + ", " + ((new Date()).getFullYear() + 1) + selectedTime;
                         }
                         $scope.search.date = new Date(constructedDate);
-                        //$scope.search.players = (output[2].split(" "))[1];
                         console.log($scope.search.date);
                         $scope.search.text = output.join(" - ");
-                        //$scope.checkfree();
                     }
                 });
             }
@@ -1479,10 +1503,12 @@ angular.module('football.controllers')
         }
 
 
+
         $scope.addbooking = function () {
+
+
+
             if (!$scope.nointernet) {
-
-
                 try {
 
                     $scope.stadiumdata.key = $scope.stadiumdata.key.trim();
@@ -1511,6 +1537,14 @@ angular.module('football.controllers')
                         confirmPopup.then(function (res) {
                             if (res) {
 
+                                /*$ionicLoading.show({
+                                    content: 'Saving Customer',
+                                    animation: 'fade-in',
+                                    showBackdrop: true,
+                                    maxWidth: 200,
+                                    showDelay: 0
+                                });*/
+
                                 var details = {};
 
                                 for (i = 0; i < $scope.myministadiums.length; i++) {
@@ -1533,6 +1567,8 @@ angular.module('football.controllers')
                                     }
                                 }
 
+
+
                                 if (!$scope.IsEditMode) {
 
                                     AdminStore.AddBooking($scope.stadiumdata, $scope.search, details)
@@ -1552,6 +1588,8 @@ angular.module('football.controllers')
                                             };
 
                                             $scope.selectedcustomer = {};
+                                            //$ionicLoading.hide();
+
                                             var alertPopup = $ionicPopup.alert({
                                                 title: 'Success',
                                                 template: 'Successfully Booked'
@@ -2924,7 +2962,7 @@ dateArrayThingy.push("Today");
 dateArrayThingy.push("Tomorrow");
 //alert(nesheDate.getDay());
 nesheDate.setDate(nesheDate.getDate() + 1);
-for (i = 0; i < 7; i++) {
+for (i = 0; i < 5; i++) {
     nesheDate.setDate(nesheDate.getDate() + 1);
     dateArrayThingy.push(weekdayFull[nesheDate.getDay()]);
 }
