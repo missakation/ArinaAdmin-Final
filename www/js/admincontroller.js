@@ -585,7 +585,7 @@ angular.module('football.controllers')
                                 AdminStore.SendNotification("Your Booking at " + $scope.SelectedBooking.stadiumname
                                     + " on "
                                     + $scope.SelectedBooking.fullstartdate.toString()
-                                    + "Has Been Cancelled", Tokens)
+                                    + " Has Been Cancelled - Call " + $scope.SelectedBooking.admintelephone, Tokens)
 
                                 if (result == "") {
                                     alert("Could Not Update User Infos");
@@ -643,7 +643,9 @@ angular.module('football.controllers')
                                             }
                                         }
 
-                                        AdminStore.SendNotification("Your Booking at " + $scope.SelectedBooking.stadiumname + " on " + $scope.SelectedBooking.fullstartdate.toString(), Tokens)
+                                        AdminStore.SendNotification("Your Booking at " + $scope.SelectedBooking.stadiumname + " on "
+                                            + $scope.SelectedBooking.fullstartdate.toString()
+                                            + " Has Been Cancelled - Call " + $scope.SelectedBooking.admintelephone, Tokens)
                                         var updates = {};
                                         var user = firebase.auth().currentUser;
                                         if (result == "") {
@@ -1028,14 +1030,14 @@ angular.module('football.controllers')
             text: "Tomorrow, 9:00PM" //- " + ($scope.myprofile.favstadium != null && $scope.myprofile.favstadium != "" ?$scope.myprofile.favstadium:"Near me")
         };
 
-        var options = {  
-            weekday: "long", year: "numeric", month: "short",  
-            day: "numeric", hour: "2-digit", minute: "2-digit"  
-        };  
+        var options = {
+            weekday: "long", year: "numeric", month: "short",
+            day: "numeric", hour: "2-digit", minute: "2-digit"
+        };
 
         if ($scope.IsEditMode) {
             $scope.search.date = $scope.CurrentBooking.fullstartdate;
-            $scope.search.text = $scope.CurrentBooking.fullstartdate.toLocaleTimeString("en-us", options);  
+            $scope.search.text = $scope.CurrentBooking.fullstartdate.toLocaleTimeString("en-us", options);
         }
 
         function getDateFromDayName(selectedDay) {
@@ -1295,15 +1297,18 @@ angular.module('football.controllers')
 
                 $scope.customers = leagues;
 
-                for (i = 0; i < $scope.customers.length; i++) {
+                if ($scope.IsEditMode) {
 
-                    if ($scope.searchtel.currenttelephone == $scope.customers[i].telephone) {
+                    for (i = 0; i < $scope.customers.length; i++) {
 
-                        $scope.selectedcustomer = $scope.customers[i];
-                        $scope.stadiumdata.customer = $scope.customers[i].key;
-                        $scope.stadiumdata.telephone = $scope.customers[i].telephone;
-                        $scope.stadiumdata.firstname = $scope.customers[i].firstname;
-                        $scope.notselected = false;
+                        if ($scope.searchtel.currenttelephone == $scope.customers[i].telephone) {
+
+                            $scope.selectedcustomer = $scope.customers[i];
+                            $scope.stadiumdata.customer = $scope.customers[i].key;
+                            $scope.stadiumdata.telephone = $scope.customers[i].telephone;
+                            $scope.stadiumdata.firstname = $scope.customers[i].firstname;
+                            $scope.notselected = false;
+                        }
                     }
                 }
 
@@ -2117,12 +2122,38 @@ angular.module('football.controllers')
     .controller('MenuController', function ($scope, $state, $stateParams, $ionicPopup, $ionicLoading) {
         $scope.logout = function () {
 
+
+
             try {
-                firebase.auth().signOut().then(function () {
-                    $state.go('signin');
-                }, function (error) {
-                    console.log(error.message);
-                });
+
+                var user = firebase.auth().currentUser;
+                var query = firebase.database().ref('/admins/' + user.uid).once('value', function (adminsnapshot) {
+                    window.plugins.OneSignal.getIds(function (ids) {
+
+                        var updates = {};
+
+                        updates['/admins/' + user.uid + '/devicetoken/' + ids.userId] = true;
+                        updates['/stadiums/' + adminsnapshot.child("key").val() + '/devicetoken/' + ids.userId] = true;
+                        updates['/stadiumsinfo/' + adminsnapshot.child("key").val() + '/devicetoken/' + ids.userId] = true;
+
+
+                        firebase.database().ref().update(updates).then(function () {
+
+                            firebase.auth().signOut().then(function () {
+                                $state.go('signin');
+                            }, function (error) {
+                                console.log(error.message);
+                            });
+
+                        }).catch(function (error) {
+
+                            this.errorMessage = 'Error - ' + error.message
+
+                        });
+                    });
+                })
+
+
 
                 // window.plugins.OneSignal.setSubscription(false);
 

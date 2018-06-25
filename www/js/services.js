@@ -249,6 +249,7 @@ angular.module('football.services', [])
                                             "userid": minischedule.child("usercode").val(),
                                             "username": "",
                                             "telephone": minischedule.child("telephone").val(),
+                                            "admintelephone": ministadiums.child("locationtelephone").val(),
                                             //"telephone": miniministadiums.child("telephone").val(),
                                             "price": minischedule.child("price").val(),
                                             "color": color,
@@ -1436,6 +1437,8 @@ angular.module('football.services', [])
                 var message = {
                     app_id: "233d6f63-8ead-4ee7-8e69-03f4088a075a",
                     contents: { "en": _message },
+                    small_icon: "drawable-ldpi-icon.png",
+                    large_icon: "drawable-xxxhdpi-icon.png",
                     include_player_ids: devicetokens
                 };
 
