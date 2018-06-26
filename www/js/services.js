@@ -1435,7 +1435,7 @@ angular.module('football.services', [])
 
 
                 var message = {
-                    app_id: "233d6f63-8ead-4ee7-8e69-03f4088a075a",
+                    app_id: "3c52e01f-0945-4334-aff0-25ff0b5fb7ad",
                     contents: { "en": _message },
                     small_icon: "drawable-ldpi-icon.png",
                     large_icon: "drawable-xxxhdpi-icon.png",
@@ -1444,7 +1444,7 @@ angular.module('football.services', [])
 
                 var headers = {
                     "Content-Type": "application/json; charset=utf-8",
-                    "Authorization": "Basic MTg2NTRmZmUtOTBiYS00OGI3LWJmOTUtNzNiMzU1NTFkZGYy"
+                    "Authorization": "Basic MzUzM2UzZTQtNWRkOS00ZjZiLWExZTctYTgyYTIwNjMzOGU5"
                 };
 
                 if (atTime === undefined) {
@@ -1465,7 +1465,19 @@ angular.module('football.services', [])
 
                 }
 
-                $http(req).then(function () {
+                message.app_id = '233d6f63-8ead-4ee7-8e69-03f4088a075a';
+                headers.Authorization = "Basic MTg2NTRmZmUtOTBiYS00OGI3LWJmOTUtNzNiMzU1NTFkZGYy"
+
+                var req1 = {
+                    method: 'POST',
+                    url: notificationurl,
+                    headers: headers,
+                    data: message,
+                    headings: { "en": "English Title", "es": "Spanish Title" }
+                }
+
+
+                $q.all([$http(req), $http(req1)]).then(function () {
 
                 }, function (error) {
 
